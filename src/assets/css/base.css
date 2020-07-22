@@ -1,0 +1,66 @@
+:root {
+    /* 边框布局盒子 */
+    --bdBox: 2px dashed #aaa;
+}
+
+/*清除ul li原生样式*/
+
+p {
+    margin: 0;
+}
+
+ul, li {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+/* 禁止图片被拖拽 */
+
+img {
+    -webkit-user-drag: none;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+}
+
+/* 隐藏浏览器滚动条 */
+/* body {
+    overflow-x: hidden;
+    overflow-y: auto; 
+} */
+/* ------------- 路由过渡动画 start ------------- */
+
+/* 进入和离开时的过渡状态 */
+
+.fade-enter-active, .fade-leave-active {
+    transition: all 0.2s ease;
+    overflow-x: hidden;
+    position: absolute;
+    /* 解决从右侧进入从左侧出去问题 解决上自下往上颤动问题 */
+}
+
+/* 进入过渡的开始状态 & 离开过渡的结束状态 */
+
+.fade-enter, .fade-leave-to {
+    opacity: 0;
+    transform: translateX(100px);
+}
+
+/* ------------- 路由过渡动画 end ------------- */
+
+
+
+
+
+/* 360°旋转动画 */
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
