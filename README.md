@@ -2,6 +2,8 @@
 ## 介绍
 一个基于Vue.js框架开发的天气应用，数据来源使用和风天气api
 
+Meteo 名称来源于法语单词的 `météorologiques` ，也称`météo`，是天气的意思。
+
 ## 安装教程（Build Setup）
 
 ```
