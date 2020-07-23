@@ -162,7 +162,8 @@ export default {
   /* flex: 1; */
   font-size: 20px;
   /* color: #469cec; */
-  color: rgba(255, 113, 0, 0.9);
+  /* color: rgba(255, 113, 0, 0.9); */
+  color: #ff9404;
   /* text-shadow: 1px 0px 2px #ccc;  */
   overflow: hidden;
 }
@@ -173,6 +174,7 @@ export default {
   /* line-height: 36px; */
   padding-top: 10px;
   font-size: 14px;
+  /* color: #fed500; */
   /* font-family: "Alibaba-PuHuiTi-Regular"; */
   /* color: rgb(198, 202, 214); */
 }

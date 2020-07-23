@@ -7,7 +7,10 @@
         <img :src="updateicon" class="update-icon" ref="update" />
       </div>
       <div class="local">
-        <div class="location">{{$store.state.city}}</div>
+        <div class="location">
+          <img :src="posIconUrl" class="posicon" v-show="this.$store.state.positionCity.cityname" />
+          {{$store.state.city}}
+        </div>
       </div>
       <div class="nowtemp">
         {{$store.state.now.temperature}}
@@ -17,7 +20,15 @@
         <img :src="require(`assets/img/wicon/${$store.state.now.weathericoncode}.png`)" />
       </div>
       <div class="wname">{{$store.state.now.weathername}}</div>
-      <img :src="position" class="position-icon" @click="getPosition" />
+      <img :src="position" class="position-icon" @click="getPosition" @mouseover.stop="showPostips" @mouseout.stop="hidePostips"/>
+      <div class="postips" v-show="postipsStatus" @mouseover.stop="showPostips" @mouseout.stop="hidePostips">
+        <div class="posTextTips">
+          <p>获取精准定位</p>
+          <span>无法定位？</span>
+          <a href>查看原因</a>
+        </div>
+        <div class="triangle"></div>
+      </div>
     </div>
   </div>
 </template>
@@ -26,8 +37,10 @@
 export default {
   data() {
     return {
-      updateicon: require("assets/img/mainboard/update.svg"),
-      position: require("assets/img/mainboard/position.svg"),
+      postipsStatus: false,
+      updateicon: require("assets/img/mainboard/update.png"),
+      position: require("assets/img/mainboard/position.png"),
+      posIconUrl: require("assets/img/citychoose/position.png"),
     };
   },
 
@@ -38,21 +51,36 @@ export default {
       this.$store.dispatch("getGeoPosition");
       setTimeout(() => {
         this.$store.state.loadingTip = false;
-        this.$refs.update.className = 'update-icon iconrotate';
+        this.$refs.update.className = "update-icon iconrotate";
+        this.postipsStatus = false;
+        if (!this.$store.state.posError) {
+          // console.log(this.$store.state.posError);
+          this.$store.state.positionCity.cityname = this.$store.state.city;
+          this.$store.state.positionCity.poscityid = this.$store.state.cityid;
+        }
       }, 2000);
-      this.$refs.update.className = 'update-icon';
+      this.$refs.update.className = "update-icon";
     },
     updateBtn() {
       this.$store.state.loadingTip = true;
-      this.$store.dispatch("getWeather", this.$store.state.city);
-      
-      setTimeout(() => { 
+      this.$store.dispatch("getWeather", this.$store.state.cityid);
+
+      setTimeout(() => {
         this.$store.state.loadingTip = false;
-        this.$refs.update.className = 'update-icon iconrotate';
+        this.$refs.update.className = "update-icon iconrotate";
       }, 1500);
-      this.$refs.update.className = 'update-icon';
+      this.$refs.update.className = "update-icon";
+    },
+    showPostips(){
+      this.postipsStatus = true;
+    },
+    hidePostips(){
+      // setTimeout(() => {
+        this.postipsStatus = false;
+      // },200)
+      
     }
-  }
+  },
 };
 </script>
 
@@ -112,8 +140,57 @@ export default {
   margin-top: 18px;
   font-size: 24px;
   /* font-family: "gillsans-heavy"; */
+  position: relative;
 }
-
+.posicon {
+  width: 20px;
+  position: absolute;
+  left: 52px;
+  top: 4px;
+}
+.posTextTips {
+  padding-left: 8px;
+  position: absolute;
+  top: 55px;
+  right: 18px;
+  width: 116px;
+  height: 46px;
+  /* border: 1px solid #000; */
+  border-radius: 3px;
+  font-size: 12px;
+  background-color: #313131;
+  /* opacity: 0.9; */
+  color: #fff;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.25);
+  /* z-index: 70; */
+}
+.posTextTips p {
+  margin: 6px 0;
+}
+.posTextTips a {
+  text-decoration: none;
+  color: #0f89f5;
+}
+.posTextTips a:hover {
+  text-decoration: underline;
+}
+.posTextTips a:visited {
+  /* color: #fff; */
+}
+.triangle {
+  margin: 0px;
+  border-width: 8px;
+  border-style: solid;
+  border-color: transparent transparent #313131;
+  /* opacity: 0.9; */
+  padding: 0px;
+  width: 0px;
+  height: 0px;
+  top: 41px;
+  right: 23px;
+  position: absolute;
+  /* z-index: 6; */
+}
 .nowtemp {
   flex: 1;
   text-align: center;

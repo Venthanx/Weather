@@ -10,6 +10,11 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     city: '北京',  // 默认城市
+    cityid: null,
+    positionCity: {
+      cityname: null,
+      poscityid: null
+    },
     now: {
       temperature: '10',
       weathername: '晴',
@@ -22,8 +27,9 @@ export default new Vuex.Store({
       wcode: []
     },
     lifestyle: [],
-
-    loadingTip: false
+    selectedCitys: [],
+    loadingTip: false,
+    posError: false,
   },
   mutations: {
 
@@ -33,13 +39,20 @@ export default new Vuex.Store({
 
     updateWeather(state, payload) {
 
+      if(0){
+        vm.$store.state.positionCity.cityname = vm.$store.state.city;
+        vm.$store.state.positionCity.poscityid = vm.$store.state.cityid;
+      }
+
+
       state.city = payload.res1.data.HeWeather6[0].basic.location;
+      state.cityid = payload.res1.data.HeWeather6[0].basic.cid.substr(2);
       state.now.temperature = payload.res1.data.HeWeather6[0].now.tmp;
       state.now.weathername = payload.res1.data.HeWeather6[0].now.cond_txt;
       state.now.weathericoncode = payload.res1.data.HeWeather6[0].now.cond_code;
-      // console.log(payload.res1);
+      // console.log(payload.res1.data.HeWeather6[0].basic.location);
       // state.now.updatetime = payload.res1.data.HeWeather6[0].update.loc.substring(11);
-      state.now.updatetime = new Date().toTimeString().substr(0,5);
+      state.now.updatetime = new Date().toTimeString().substr(0, 5);
 
       state.forecast.days = payload.res2.data.HeWeather6[0].daily_forecast;
       // 清空原数组 避免误触发多次 造成数组污染
@@ -77,11 +90,13 @@ export default new Vuex.Store({
         // pos = pos ? `${pos.coords.longitude},${pos.coords.latitude}` : "auto_ip";
         pos = `${pos.coords.longitude},${pos.coords.latitude}`;
         this.dispatch('getWeather', pos);
+        // console.log(vm.$store.state.posError);
+        vm.$store.state.posError = false;
       };
 
       // 3.定位失败反馈
       function showError(error) {
-
+        vm.$store.state.posError = true;
         // 先自动获取一次假数据 防止页面空白
         // vm.$store.dispatch('getWeather', 'auto_ip');
 

@@ -11,7 +11,7 @@
 export default {
   data() {
     return {
-      icon: require("assets/img/app/loading.svg")
+      icon: require("assets/img/app/loading.png")
     };
   }
 };
@@ -51,7 +51,7 @@ export default {
   animation: rotate 1.2s linear infinite;
 }
 .toast .tips {
-  /* color: #666; */
+  /* color: #1296db; */
   text-indent: 14px;
   font-size: 14px;
 }

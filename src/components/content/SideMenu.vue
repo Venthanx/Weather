@@ -6,10 +6,19 @@
     <div class="links">
       <!-- 不能用a标签 -->
       <!-- <div class="link" @click="cityClick">订阅城市</div> -->
-      <div class="link" @click="settingsClick">设置</div>
+      <div class="link" @click="settingsClick">
+        <img :src="setIconUrl" class="set-icon" />
+        设置
+      </div>
       <!-- <div class="link" @click="menuLink()">主题</div> -->
-      <div class="link" @click="about">关于</div>
+      <div class="link" @click="about">
+        <img :src="aboutIconUrl" class="about-icon" />
+        关于
+      </div>
     </div>
+    <a href="https://github.com/Venthanx" target="_blank">
+      <div class="developer">开发者 · Venthanx</div>
+    </a>
   </div>
 </template>
 
@@ -17,7 +26,9 @@
 export default {
   data() {
     return {
-      menuState: false
+      menuState: false,
+      setIconUrl: require("assets/img/menu/setting.svg"),
+      aboutIconUrl: require("assets/img/menu/about.svg"),
     };
   },
 
@@ -38,8 +49,8 @@ export default {
 
     about() {
       this.$router.push("/About");
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -53,7 +64,7 @@ export default {
   z-index: 90;
   overflow: hidden;
   /* 过渡 */
-  transition: all 800ms cubic-bezier(0.8, 0, 0.33, 1);
+  transition: all 600ms cubic-bezier(0.8, 0, 0.33, 1);
   transform: translateX(-180px);
   border-radius: 0% 0% 100% 50%;
 }
@@ -67,6 +78,7 @@ export default {
 .menu-btn {
   width: 60px;
   height: 44px;
+  /* line-height: 44px; */
   position: absolute;
   right: 0;
   top: 0;
@@ -78,7 +90,12 @@ export default {
   height: 44px;
   width: 20px;
 }
-
+.set-icon,
+.about-icon {
+  float: left;
+  height: 23px;
+  margin-right: 6px;
+}
 .links {
   width: 240px;
   height: 100%;
@@ -91,7 +108,7 @@ export default {
 .links .link {
   margin: 20px 0;
   text-decoration: none;
-  color: rgba(0, 0, 0, 0.9);
+  /* color: rgba(0, 0, 0, 0.9); */
 
   /* font-weight: 700; */
   font-size: 20px;
@@ -117,4 +134,22 @@ export default {
     z-index: 10;
     filter: alpha(opacity=60);  
   } */
+.developer {
+  font-size: 10px;
+  padding: 5px 10px;
+  /* color: #1296db; */
+  position: fixed;
+  /* top: 90px; */
+  /* top: 190px; */
+  bottom: 24px;
+  left: 62px;
+  /* opacity: .5; */
+  background: rgba(20, 148, 217, 0.164);
+  border-radius: 12px;
+  /* transform:rotate(-90deg); */
+}
+
+a {
+  color: #000;
+}
 </style>

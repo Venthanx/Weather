@@ -12,9 +12,14 @@
   line-height: 60px;
   text-align: center;
   font-size: 12px;
-  color: rgba(192, 192, 192, 0.6);
+  color: rgba(192, 192, 192, 0.7);
+  /* letter-spacing: 1px; */
 }
 .source-data {
-  color: rgba(192, 192, 192, 0.6);
+  color: rgba(192, 192, 192, 0.7);
+  text-decoration: none;
+}
+.source-data:hover {
+  text-decoration: underline;
 }
 </style>
