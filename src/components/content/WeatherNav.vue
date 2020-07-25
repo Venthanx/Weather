@@ -26,30 +26,19 @@ export default {
 </script>
 
 <style>
-.menu-icon {
+/* .menu-icon { */
   /* width: 22px; */
   /* height: 44px; */
-}
+/* } */
 
 .plus-icon {
-  /* display: block; */
-  /* box-sizing: border-box; */
-  /* margin-top: 12px; */
   width: 20px;
   height: 20px;
   cursor: pointer;
 }
 
 .logo-title {
-  /* font-family: "gillsans-heavy"; */
-  /* font-size: 20px; */
   height: 16px;
   vertical-align: middle;
-  /* color: #0077ff; */
-  /* color: saddlebrown; */
-  /* vertical-align: bottom; */
-  /* font-weight: 400; */
-  /* height: 44px; */
-  /* line-height: 60px; */
 }
 </style>

@@ -31,6 +31,7 @@ export default new Vuex.Store({
     loadingTip: false,
     posError: false,
   },
+
   mutations: {
 
     // showWeather(apitype, location) {
@@ -39,24 +40,18 @@ export default new Vuex.Store({
 
     updateWeather(state, payload) {
 
-      if(0){
-        vm.$store.state.positionCity.cityname = vm.$store.state.city;
-        vm.$store.state.positionCity.poscityid = vm.$store.state.cityid;
-      }
-
+        // vm.$store.state.positionCity.cityname = vm.$store.state.city;
+        // vm.$store.state.positionCity.poscityid = vm.$store.state.cityid;
 
       state.city = payload.res1.data.HeWeather6[0].basic.location;
       state.cityid = payload.res1.data.HeWeather6[0].basic.cid.substr(2);
       state.now.temperature = payload.res1.data.HeWeather6[0].now.tmp;
       state.now.weathername = payload.res1.data.HeWeather6[0].now.cond_txt;
       state.now.weathericoncode = payload.res1.data.HeWeather6[0].now.cond_code;
-      // console.log(payload.res1.data.HeWeather6[0].basic.location);
-      // state.now.updatetime = payload.res1.data.HeWeather6[0].update.loc.substring(11);
       state.now.updatetime = new Date().toTimeString().substr(0, 5);
 
       state.forecast.days = payload.res2.data.HeWeather6[0].daily_forecast;
-      // 清空原数组 避免误触发多次 造成数组污染
-      state.forecast.wcode = [];
+      state.forecast.wcode = [];  // 清空原数组 避免误触发多次 造成数组污染
       state.forecast.weekdays.splice(2, 5);
       const weekDay = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"];
       for (let i = 2; i < state.forecast.days.length; i++) {
@@ -70,6 +65,7 @@ export default new Vuex.Store({
     }
 
   },
+
   actions: {
 
     getGeoPosition(context) {
@@ -117,7 +113,6 @@ export default new Vuex.Store({
       }
     },
 
-
     // getWeather(context, pos) {
     //   getNowData(pos).then(res => {
     //     context.commit('updateWeather', res);
@@ -129,7 +124,6 @@ export default new Vuex.Store({
     //   commit('updateWeather', result)
     // },
 
-
     getWeather(context, pos) {
       axios.all([getNowData(pos), get7DaysData(pos), getLifestyle(pos)]).then(axios.spread(
         (res1, res2, res3) => {
@@ -137,8 +131,6 @@ export default new Vuex.Store({
         }))
     }
 
-  },
-  modules: {
   }
 })
 

@@ -12,7 +12,6 @@
 </template>
 
 <script>
-
 import SideMenu from "components/content/SideMenu";
 import WeatherNav from "components/content/WeatherNav";
 import MainBoard from "components/content/MainBoard";
@@ -20,9 +19,6 @@ import PageFooter from "components/content/PageFooter";
 import day7Forecast from "components/child/Day7";
 import LifeGuide from "components/child/LifeGuide";
 import Loading from "components/content/Loading";
-
-
-
 
 export default {
   components: {
@@ -32,34 +28,30 @@ export default {
     PageFooter,
     day7Forecast,
     LifeGuide,
-    Loading
+    Loading,
   },
 
   data() {
     return {
       maskState: false,
-      // loadingTip: false
-    }
+    };
   },
 
   methods: {
     maskClick() {
-      this.$data.maskState = !this.$data.maskState;
+      this.maskState = !this.maskState;
       this.$refs.menu.menuState = !this.$refs.menu.menuState;
-    }
+    },
   },
-
-}
+};
 </script>
 
 <style>
-
 .home {
   position: relative;
   /* width: 100%; */
   /* height: 100%; */
   background: linear-gradient(to bottom, #ffffff, #def6fd);
-  
 }
 
 .mask {
@@ -69,8 +61,7 @@ export default {
   height: 100%;
   background-color: rgba(0, 0, 0, 0.1);
   z-index: 89;
-  /* 高斯模糊 (more not support !!!) */
+  /* 高斯模糊 (more not support !!!)  */
   backdrop-filter: saturate(180%) blur(4px);
 }
-
 </style>

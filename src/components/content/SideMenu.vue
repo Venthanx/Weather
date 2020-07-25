@@ -5,11 +5,14 @@
     </div>
     <div class="links">
       <!-- 不能用a标签 -->
-      <!-- <div class="link" @click="cityClick">订阅城市</div> -->
-      <div class="link" @click="settingsClick">
+      <div class="link" @click="cityClick">
+        <img :src="subscribeIconUrl" class="sub-icon" />
+        订阅城市
+      </div>
+      <!-- <div class="link" @click="settingsClick">
         <img :src="setIconUrl" class="set-icon" />
         设置
-      </div>
+      </div>-->
       <!-- <div class="link" @click="menuLink()">主题</div> -->
       <div class="link" @click="about">
         <img :src="aboutIconUrl" class="about-icon" />
@@ -19,6 +22,7 @@
     <a href="https://github.com/Venthanx" target="_blank">
       <div class="developer">开发者 · Venthanx</div>
     </a>
+    <!-- <div class="mask" v-show="maskState" @click="maskClick"></div> -->
   </div>
 </template>
 
@@ -27,25 +31,28 @@ export default {
   data() {
     return {
       menuState: false,
+      // maskState: false,
       setIconUrl: require("assets/img/menu/setting.svg"),
       aboutIconUrl: require("assets/img/menu/about.svg"),
+      subscribeIconUrl: require("assets/img/menu/subscribe.svg"),
     };
   },
 
   methods: {
     menuBtn() {
-      this.$data.menuState = !this.$data.menuState;
+      this.menuState = !this.menuState;
+      // this.$store.state.maskState = !this.$store.state.maskState;
       this.$parent.maskState = !this.$parent.maskState;
     },
 
-    // cityClick() {
-    //   this.$router.push("/CityChoose");
-    //   // this.$router.push({path:'/CityChoose'});
-    // },
-
-    settingsClick() {
-      this.$router.push("/Settings");
+    cityClick() {
+      this.$router.push("/CityChoose");
+      // this.$router.push({path:'/CityChoose'});
     },
+
+    // settingsClick() {
+    //   this.$router.push("/Settings");
+    // },
 
     about() {
       this.$router.push("/About");
@@ -78,7 +85,6 @@ export default {
 .menu-btn {
   width: 60px;
   height: 44px;
-  /* line-height: 44px; */
   position: absolute;
   right: 0;
   top: 0;
@@ -91,7 +97,8 @@ export default {
   width: 20px;
 }
 .set-icon,
-.about-icon {
+.about-icon,
+.sub-icon {
   float: left;
   height: 23px;
   margin-right: 6px;
@@ -102,11 +109,10 @@ export default {
   padding-top: 44px;
   display: flex;
   flex-direction: column;
-  align-items: center;
 }
 
 .links .link {
-  margin: 20px 0;
+  margin: 20px 0 20px 60px;
   text-decoration: none;
   /* color: rgba(0, 0, 0, 0.9); */
 
@@ -117,33 +123,12 @@ export default {
   /* text-transform: uppercase; */
 }
 
-/* .mask000 {
-    height: 100%;
-    width: 100%;
-    background: rgba(255, 255, 255, 0.6);
-    filter: blur(15px);
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    overflow: hidden;
-    outline: 0;
-    -webkit-overflow-scrolling: touch;
-    background-color: rgba(255, 255, 255, 0.281);
-    z-index: 10;
-    filter: alpha(opacity=60);  
-  } */
 .developer {
   font-size: 10px;
   padding: 5px 10px;
-  /* color: #1296db; */
   position: fixed;
-  /* top: 90px; */
-  /* top: 190px; */
   bottom: 24px;
   left: 62px;
-  /* opacity: .5; */
   background: rgba(20, 148, 217, 0.164);
   border-radius: 12px;
   /* transform:rotate(-90deg); */

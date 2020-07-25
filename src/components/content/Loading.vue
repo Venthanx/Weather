@@ -1,7 +1,7 @@
 <template>
   <div class="loading">
     <div class="toast">
-      <img :src="icon" alt />
+      <img :src="icon" />
       <div class="tips">获取天气数据 ...</div>
     </div>
   </div>
@@ -26,13 +26,7 @@ export default {
   top: 0;
   width: 100%;
   height: 100%;
-  /* bottom: 100px; */
-  /* left: 200px; */
-
-  /* width: 200px;
-  height: 200px; */
   text-align: center;
-  /* opacity: .5; */
   z-index: 100;
 
   background-color: rgba(0, 0, 0, 0.1);
@@ -41,8 +35,6 @@ export default {
 }
 .toast {
   margin-top: 354px;
-  /* width: 100px; */
-  /* background-color: #fff; */
 }
 .toast img {
   height: 30px;

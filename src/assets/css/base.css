@@ -28,9 +28,15 @@ html, body {
 
 /* 隐藏浏览器滚动条 */
 /* body {
+    overflow: hidden;
     overflow-x: hidden;
     overflow-y: auto; 
 } */
+
+/* 隐藏滚动条，但依旧具备可以滚动的功能 */
+body::-webkit-scrollbar {
+    display: none;
+}
 /* ------------- 路由过渡动画 start ------------- */
 
 /* 进入和离开时的过渡状态 */
@@ -50,9 +56,6 @@ html, body {
 }
 
 /* ------------- 路由过渡动画 end ------------- */
-
-
-
 
 
 /* 360°旋转动画 */

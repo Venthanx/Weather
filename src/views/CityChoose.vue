@@ -2,18 +2,18 @@
   <div class="city-choose">
     <nav-bar>
       <img class="back" slot="left" @click="backBtn" :src="backIconUrl" />
-      <!-- <div class="back" slot="left" @click="backBtn">返回</div> -->
       <div class="title" slot="center">城市列表</div>
-      <img class="edit" slot="right" @click="editBtn" :src="editIconUrl" v-show="!editState" />
-      <img class="done" slot="right" @click="editBtn" :src="doneIconUrl" v-show="editState" />
+      <img class="edit" slot="right" @click="editBtn" :src="editIconUrl" v-show="!editState" v-if="editBtnHide" />
+      <img class="done" slot="right" @click="editBtn" :src="doneIconUrl" v-show="editState" v-if="editBtnHide"/>
     </nav-bar>
+
     <div class="searchbar">
       <input
         type="text"
         class="search"
+        :class="{ 'search-trans' : transState }"
         ref="search"
         @focus="getFocus"
-        @mouseout="noFocus($event)"
         placeholder="输入城市名称"
         v-model.trim="keyword"
       />
@@ -40,18 +40,21 @@
         </li>
       </ul>
     </div>
-    <transition>
-      <div class="city-area" v-show="isShow" ref="resultshow">
-        <ul>
-          <li
-            v-for="(item, i) of lists"
-            :key="Math.random() + i"
-            @click="addNewCity(item, item.id)"
-          >{{item.name}}，{{item.adm2}}，{{item.adm1}}</li>
-          <li class="tip" v-show="hasNoData">没有找到匹配数据</li>
-        </ul>
-      </div>
-    </transition>
+
+    <div class="city-area" v-show="isShow" ref="resultshow">
+      <ul>
+        <li
+          v-for="item of lists"
+          :key="item.id"
+          @click="addNewCity(item, item.id)"
+        ><span>{{item.name}}</span>
+        <span v-if="item.name != item.adm2">，{{item.adm2}}</span>
+        <span v-if="item.name != item.adm1">，{{item.adm1}}</span>
+        <!-- {{item.name}}，{{item.adm2}}，{{item.adm1}} -->
+        </li>
+        <li class="tip" v-show="hasNoData">没有找到匹配数据</li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -62,18 +65,18 @@ export default {
   components: {
     NavBar,
   },
-  // props: {
-  //   cities: Object
-  // },
+
   data() {
     return {
       isShow: false,
       hasNoData: false,
       editState: false,
+      transState: false,
+      editBtnHide: true,
       keyword: "",
       lists: [],
       timer: null,
-      backIconUrl: require("assets/img/citychoose/back.png"),
+      backIconUrl: require("assets/img/navbar/back.png"),
       editIconUrl: require("assets/img/citychoose/edit.png"),
       posIconUrl: require("assets/img/citychoose/position.png"),
       doneIconUrl: require("assets/img/citychoose/done.png"),
@@ -87,26 +90,22 @@ export default {
     editBtn() {
       this.editState = !this.editState;
     },
-    getFocus(e) {
+    getFocus() {
       this.isShow = true;
-      // console.log(this.$refs.search.style.marginRight);
-      // this.$refs.search.style.marginRight = "16px";
+      this.transState = true;
+      this.editBtnHide = false;
     },
 
-    noFocus(e) {
-      // if(e != undefined) {
-      e.target.blur();
-      // }
-    },
     cancelBtn() {
       this.isShow = false;
+      this.transState = false;
       this.keyword = "";
+      this.editBtnHide = true;
     },
 
     addNewCity(city, cityid) {
+      this.editBtnHide = true;
       this.$store.state.selectedCitys.push(city);
-      // this.$store.state.selectedCitys.push(city);
-
       this.$store.dispatch("getWeather", cityid);
       this.$router.push("/Home");
       this.$store.state.loadingTip = true;
@@ -117,7 +116,6 @@ export default {
       // console.log(city);
     },
     jumpTo(cityid) {
-      // console.log(cityid);
       this.$store.dispatch("getWeather", cityid);
       this.$router.push("/Home");
       this.$store.state.loadingTip = true;
@@ -148,7 +146,7 @@ export default {
         return;
       }
 
-      // if (this.keyword) {
+
       //   // [优化]：使用延时计时器 减少数据请求执行的频率
       this.timer = setTimeout(() => {
         // const result = [];
@@ -167,10 +165,7 @@ export default {
         // let result = this.cityjson.filter(item => {
         //   if (item.includes(this.keyword)) {
         //     return item;
-        //   }
-        // });
-
-        // this.lists = result;
+        //   }}
 
         getCitylist(this.keyword).then((res) => {
           if (res.data.status == 404) {
@@ -225,7 +220,6 @@ export default {
 .searchbar button {
   font-size: 14px;
   width: 60px;
-  margin-left: 10px;
   height: 32px;
   border: 1px solid transparent;
   border-radius: 20px;
@@ -237,9 +231,9 @@ export default {
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.12);
   -webkit-box-shadow: 0 2px 0 rgba(0, 0, 0, 0.045);
   box-shadow: 0 2px 0 rgba(0, 0, 0, 0.045);
-
-  transition: all 0.1s cubic-bezier(0.645, 0.045, 0.355, 1);
+  transition: all 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
 }
+
 .searchbar button:hover {
   color: #fff;
   background: #40a9ff;
@@ -262,7 +256,7 @@ export default {
   display: block;
   width: 100%;
   height: 32px;
-  margin-right: 0;
+  /* margin-right: 0; */
   padding: 4px 11px;
   border: 1px solid #d9d9d9;
   border-radius: 20px;
@@ -273,8 +267,7 @@ export default {
   line-height: 1.5;
   list-style: none;
 
-  transition: all 0.3s;
-  /* transition: width 2s; */
+  transition: all 0.2s;
   background: url("~assets/img/citychoose/search.png") no-repeat;
   background-size: 18px 18px;
   background-position: 98% 50%;
@@ -285,21 +278,13 @@ export default {
 }
 
 .search:focus {
-  /* margin-right: 16px; */
-  /* 【动画bug】 失去焦点但是未点取消时 会自动缩回 */
   outline: 0;
   box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
   border-color: #40a9ff;
 }
-/* .search:active{
+.search-trans {
   margin-right: 16px;
 }
-
-.search:not(:active) {
-  margin-right: 0px;
-  transition: all 0.3s;
-} */
-
 
 .city-area {
   position: absolute;
@@ -307,7 +292,6 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
-  /* height: 300px; */
   background-color: rgba(46, 46, 46, 0.9);
 }
 
@@ -316,7 +300,6 @@ export default {
   width: 100%;
   height: 50px;
   line-height: 50px;
-  /* background-color: rgba(48, 48, 48, 0.329); */
   padding-left: 30px;
   margin: 0;
   color: #fff;
@@ -325,7 +308,6 @@ export default {
 }
 
 .city-area ul li.tip {
-  /* padding-left: 0; */
   text-align: center;
 }
 .selected-city ul {
@@ -334,7 +316,6 @@ export default {
 .selected-city ul li {
   box-sizing: border-box;
   margin: 0;
-  /* margin: 0 30px; */
   padding-left: 10px;
   height: 50px;
   line-height: 50px;
@@ -354,8 +335,6 @@ export default {
   position: absolute;
   top: 10px;
   right: 4px;
-  /* float: right; */
-  /* margin-right: 30px; */
   color: red;
   font-size: 14px;
   border: 1px solid red;

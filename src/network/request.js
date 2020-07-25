@@ -14,7 +14,6 @@ export function request(config) {
 
   instance.interceptors.request.use(
     config => {
-      // console.log("次请求");
       config.params.key = '836a1476f2ec4e6895b2c4087e6c1bab';
       return config
     }),

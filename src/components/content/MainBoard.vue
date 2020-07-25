@@ -20,16 +20,40 @@
         <img :src="require(`assets/img/wicon/${$store.state.now.weathericoncode}.png`)" />
       </div>
       <div class="wname">{{$store.state.now.weathername}}</div>
-      <img :src="position" class="position-icon" @click="getPosition" @mouseover.stop="showPostips" @mouseout.stop="hidePostips"/>
-      <div class="postips" v-show="postipsStatus" @mouseover.stop="showPostips" @mouseout.stop="hidePostips">
+      <img
+        :src="position"
+        class="position-icon"
+        @click="getPosition"
+        @mouseover.stop="showPostips"
+        @mouseout.stop="hidePostips"
+      />
+      <div
+        class="postips"
+        v-show="postipsStatus"
+        @mouseover.stop="showPostips"
+        @mouseout.stop="hidePostips"
+      >
         <div class="posTextTips">
           <p>获取精准定位</p>
           <span>无法定位？</span>
-          <a href>查看原因</a>
+          <a href="javascript:void(0);" @click="showErrtips">查看原因</a>
         </div>
         <div class="triangle"></div>
       </div>
     </div>
+    <div class="err-cause" v-show="ErrtipState">
+      <h3>为什么定位失败？</h3>
+      <!-- <ul>
+        <li>浏览器不支持，请更换更高版本的 Chrome 浏览器</li>
+        <li>由于H5安全权限问题，请使用 https 协议浏览本站</li>
+        <li>您拒绝了定位权限申请，请在浏览器设置内重新获取定位权限</li>
+      </ul>-->
+      <p>1. 浏览器不支持，请更换更高版本的 Chrome 浏览器；</p>
+      <p>2. 由于H5安全权限问题，请使用 https 协议浏览本站；</p>
+      <p>3. 您拒绝了定位权限申请，请在浏览器设置内重新获取定位权限。</p>
+      <div class="i-know" @click="hideErrtips">我知道了</div>
+    </div>
+    <div class="mask" v-show="maskState"></div>
   </div>
 </template>
 
@@ -41,12 +65,16 @@ export default {
       updateicon: require("assets/img/mainboard/update.png"),
       position: require("assets/img/mainboard/position.png"),
       posIconUrl: require("assets/img/citychoose/position.png"),
+      timer: null,
+      ErrtipState: false,
+      maskState: false,
     };
   },
 
   methods: {
     getPosition() {
       // 获取地位定位
+      // this.postipsStatus = false;
       this.$store.state.loadingTip = true;
       this.$store.dispatch("getGeoPosition");
       setTimeout(() => {
@@ -71,15 +99,27 @@ export default {
       }, 1500);
       this.$refs.update.className = "update-icon";
     },
-    showPostips(){
+    showPostips() {
+      if (this.timer) clearTimeout(this.timer);
       this.postipsStatus = true;
     },
-    hidePostips(){
-      // setTimeout(() => {
+    hidePostips() {
+      this.timer = setTimeout(() => {
         this.postipsStatus = false;
-      // },200)
-      
-    }
+      }, 500);
+    },
+    showErrtips() {
+      // this.$parent.maskState = true;
+      this.maskState = true;
+      // this.$store.state.maskState = true;
+      // this.$store.state.loadingTip = true;
+      this.ErrtipState = true;
+    },
+    hideErrtips() {
+      this.maskState = false;
+      // this.$store.state.maskState = false;
+      this.ErrtipState = false;
+    },
   },
 };
 </script>
@@ -103,9 +143,6 @@ export default {
 }
 .update-time {
   text-align: center;
-  /* position: absolute; */
-  /* top: 10px; */
-  /* left: 10px; */
   font-family: "Rubik-Regular";
   font-size: 14px;
   text-indent: 10px;
@@ -116,17 +153,8 @@ export default {
   margin: 0 3px;
 }
 .update-icon {
-  /* padding-top: 2px; */
-  /* content: "000"; */
-  /* width: 30px; */
   height: 12px;
-  /* line-height: 14px; */
   vertical-align: middle;
-  /* vertical-align: top; */
-  /* vertical-align: bottom; */
-  /* background: url(assets/img/mainboard/update.svg) no-repeat center; */
-  /* background: violet no-repeat center; */
-  /* transform-origin: 50% 50%; */
 }
 .iconrotate {
   animation: rotate 1s linear 1;
@@ -174,9 +202,7 @@ export default {
 .posTextTips a:hover {
   text-decoration: underline;
 }
-.posTextTips a:visited {
-  /* color: #fff; */
-}
+
 .triangle {
   margin: 0px;
   border-width: 8px;
@@ -190,6 +216,70 @@ export default {
   right: 23px;
   position: absolute;
   /* z-index: 6; */
+}
+.err-cause {
+  text-align: center;
+  /* margin: auto; */
+  /* display: table; */
+  position: fixed;
+  top: 200px;
+  /* left: 50%; */
+  /* margin-left: auto; */
+  /* margin-right: auto; */
+  width: 330px;
+  height: 250px;
+  background-color: #fff;
+  border-radius: 14px;
+  box-shadow: 2px 2px 12px rgba(116, 116, 116, 0.25);
+  z-index: 101;
+}
+.err-cause h3 {
+  margin: 24px 0 14px 0;
+}
+
+.err-cause p {
+  line-height: 20px;
+  text-align: justify;
+  margin: 6px 30px;
+  font-weight: 400;
+  font-size: 14px;
+  color: rgb(141, 141, 141);
+}
+.err-cause::after {
+  content: "";
+  position: absolute;
+  top: 10px;
+  left: 153px;
+  width: 24px;
+  height: 4px;
+  border-radius: 6px;
+  background-color: rgb(24, 123, 253);
+}
+.err-cause .i-know {
+  content: "我知道了";
+  position: absolute;
+  bottom: 14px;
+  left: 115px;
+  width: 100px;
+  height: 34px;
+  line-height: 34px;
+  border-radius: 20px;
+  background-color: rgb(0, 218, 124);
+  box-shadow: 2px 2px 6px rgba(116, 116, 116, 0.267);
+  text-align: center;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+}
+.mask {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  /* 高斯模糊 (more not support !!!) */
+  backdrop-filter: saturate(180%) blur(4px);
 }
 .nowtemp {
   flex: 1;

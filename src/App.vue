@@ -9,7 +9,6 @@
 <script>
 export default {
   name: "App",
-  components: {},
   created() {
     // 获取ip定位
     this.$store.state.loadingTip = true;
@@ -17,13 +16,13 @@ export default {
     setTimeout(() => {
       this.$store.state.loadingTip = false;
     }, 1000);
-  }
+  },
 };
 </script>
 
 <style>
-@import "assets/css/base.css";
 @import "assets/css/normalize.css";
+@import "assets/css/base.css";
 @import "assets/css/font.css";
 
 #app {

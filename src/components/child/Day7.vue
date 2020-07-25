@@ -44,7 +44,6 @@ export default {};
   /* opacity: 10%; */
   display: flex;
   flex-direction: column;
-  /* align-items: center; */
   justify-content: center;
 }
 
@@ -52,10 +51,7 @@ ul li {
   flex: 1;
   height: 30px;
   width: 100%;
-  /* width: 250px; */
   margin: 8px 0;
-  /* border: var(--bdBox); */
-
   display: flex;
   align-items: center;
 }
@@ -67,19 +63,7 @@ ul li:not(:first-child) {
 ul li span {
   /* font-family: "Alibaba-PuHuiTi-Medium"; */
   font-size: 18px;
-  /* font-weight: 700; */
-  /* border: var(--bdBox); */
 }
-
-/* ul li .wdate { */
-/* flex: 1; */
-/* width: 120px; */
-/* margin-right: 30px; */
-/* display: table; */
-/* word-spacing: -0.9em; */
-/* white-space: normal; */
-/* color: crimson; */
-/* } */
 
 .split {
   display: inline-block;
@@ -92,11 +76,6 @@ ul li span {
 ul li .wicon {
   flex: 1;
   text-align: center;
-  /* width: 58px; */
-  /* height: 18px; */
-  /* overflow: hidden; */
-  /* display: table-cell; */
-  /* vertical-align: middle; */
 }
 
 ul li .wicon img {
@@ -111,8 +90,6 @@ ul li .wicon img {
 }
 
 ul li .wtemp {
-  /* flex: 1; */
-  /* width: 82px; */
   text-align: right;
 }
 </style>
