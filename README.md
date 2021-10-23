@@ -21,3 +21,5 @@ npm run build
 #### 线上预览地址
 
 https://venthan.gitee.io/meteo
+
+⚠️ 至2021年12月1日，api地址可能会失效，等我有空再去修改。
